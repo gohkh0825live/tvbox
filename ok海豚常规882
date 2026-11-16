@@ -211,7 +211,7 @@
             "name": "🐬[追剧]LIBVIO",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/LIBVIO.py"
-		},,
+		},
         {
         	"key": "魔法影视",
             "name": "🐬[追剧]魔法影视",
@@ -265,7 +265,7 @@
             "name": "🐬[追剧]第七影院",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/第七影院.py"
-		},,
+		},
 		{
         	"key": "华谊影视",
             "name": "🐬[追剧]华谊影视",
