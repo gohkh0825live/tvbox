@@ -1,26 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 咕噜咕噜 —— TVBox T3 源（type=3 Python 爬虫）。
-
-由上传的 T4 版「咕噜💕.py」改写：
-  · 接口层：VodHandler(home/category/detail/search/player) -> T3 Spider 五接口
-    (homeContent/categoryContent/detailContent/searchContent/playerContent)
-  · 依赖层：T3 运行时无 requests / pycryptodome，全部降级为纯标准库：
-    P-256 点运算(ECDH)、AES-256-CBC 握手、AES-256-GCM 会话、urllib HTTP、手动 gzip
-  · 协议逻辑（protobuf 编解码、握手、boot 线路表、搜索/详情/播放）原样保留
-
-协议要点（勿删）：
-  · handshake：本地生成 P-256 密钥对 -> ECC ECDH 协商共享密钥 -> HKDF 派生会话密钥
-  · 会话后所有请求 AES-GCM 加密（nonce+ciphertext+tag），内层 zlib raw-deflate
-  · 列表/详情/播放都走 POST（明文 http://103.45.132.22:19987/app/bn/v2）
-  · boot() 从服务器拉 players（线路表）+ parsers（解析器表）
-  · detail 有版本守卫：响应含 VERSION_GUARD_MARKERS 时拒绝（服务器要求升级）
-  · play：id 格式 "play_id@parser_id@vod_name@index"，分服务端/外部解析两种
-
-T3 运行说明：
-  - TVBox type=3 配置：api 填本文件公网 URL；searchable/quickSearch/filterable 按需
-  - 类名约定 Spider；文件底部另提供模块级函数双入口（drpy site 模式兼容）
-  - 命令行自检：python 咕噜💕-T3.py home | search 关键词 | category 分类 页 | detail id | play 解析器 id
 """
 
 from __future__ import annotations
@@ -42,14 +22,21 @@ from urllib.parse import quote
 API_URL = "http://103.45.132.22:19987/app/bn/v2"
 HOST = "http://103.45.132.22:19987"
 USER_AGENT = "Dart/3.10 (dart:io)"
+PACKAGE_NAME = "com.hehefankuai.app"
 APP_VERSION = "2.2.5"
-BUILD_NUMBER = "20109"
+BUILD_NUMBER = "20125"
+# ⚠️ 请用 MT管理器 -> 单击APK -> 功能 -> APK签名信息 中的 SHA-256（去冒号转大写）替换下方值
 APP_SIGNATURE = "32E0AB4FF93A29CE0E6F0BFB01F2F1B788E76262731F3F30F509CB822428ED58"
 DEVICE_BUILD = "pangu-build-component-system-513739-s9vkd-rlxnj-p3rhm"
 VERSION_GUARD_MARKERS = ("__v99_", "glgl.tv", "111.170.58.215", "shu.jpg")
 FALLBACK_PARSERS = {
-    28: {"name": "咕噜金牌", "url": "http://111.170.58.215:5499/api.php?id=",
-         "mode": "json", "result_key": "url", "server": False},
+    28: {
+        "name": "咕噜金牌",
+        "url": "http://111.170.58.215:5499/api.php?id=",
+        "mode": "json",
+        "result_key": "url",
+        "server": False,
+    },
 }
 
 
@@ -621,7 +608,7 @@ class _GuluProtocol:
     def boot(self):
         now_us = int(time.time() * 1_000_000)
         app = (_field_bytes(1, "咕噜咕噜") + _field_bytes(2, APP_VERSION)
-               + _field_bytes(3, b"com.himrsc.viz") + _field_bytes(4, APP_SIGNATURE)
+               + _field_bytes(3, PACKAGE_NAME) + _field_bytes(4, APP_SIGNATURE)
                + _field_bytes(5, BUILD_NUMBER) + _field_varint(6, now_us)
                + _field_varint(7, now_us))
         device = (_field_bytes(1, self.device_id) + _field_varint(2, 1)
@@ -767,7 +754,6 @@ class Spider:
         self.last_error = ""
 
     def init(self, extend=""):
-        """drpy 空闲刷新钩子：仅复位会话无关状态，不依赖本方法被执行。"""
         return None
 
     def _ensure_boot(self) -> None:
@@ -868,7 +854,6 @@ class Spider:
         return {"list": self._cards(result.get("videos", []), pg, 21)}
 
     def playerContent(self, flag, id, vipFlags=None):
-        header = self._play_header(id)
         try:
             raw_id, parser_id, vod_name, episode_index = id.split("@", 3)
             parser_id = int(parser_id or 0)
@@ -877,7 +862,7 @@ class Spider:
         url = raw_id if (isinstance(raw_id, str) and self._is_playable_url(raw_id)) else ""
         if not url and parser_id:
             self._ensure_boot()
-            parser = self.protocol.parsers.get(parser_id, {})
+            parser = self.protocol.parsers.get(parser_id) or FALLBACK_PARSERS.get(parser_id, {})
             if parser and not parser.get("server", True):
                 try:
                     url = self._external_play(parser_id, raw_id)
@@ -893,7 +878,9 @@ class Spider:
                         url = self.protocol.play(parser_id, raw_id)
                     except Exception:
                         url = ""
-        return {"parse": 0, "url": url or "", "header": json.dumps(header)}
+        final_url = url or ""
+        header = self._play_header(final_url)
+        return {"parse": 0, "url": final_url, "header": json.dumps(header)}
 
     # ---- 工具 ----
 
@@ -940,8 +927,6 @@ class Spider:
         return 4000
 
     def _play_header(self, url: str) -> dict:
-        # 多数第三方 CDN 带不带 Referer 都能播；但 picovr / ppvod / quark
-        # 带 Referer 反而 403（实测）。动态：这些域名去 Referer。
         _no_ref = ("picovr.com", "ppvod", "drive.quark.cn")
         h = {"User-Agent": USER_AGENT}
         if not (url and any(d in url for d in _no_ref)):
@@ -958,7 +943,7 @@ class Spider:
                    (".m3u8", ".mp4", ".mkv", ".flv", ".ts", "/m.php", "?data="))
 
     def _external_play(self, parser_id, play_id) -> str:
-        parser = self.protocol.parsers.get(parser_id, {})
+        parser = self.protocol.parsers.get(parser_id) or FALLBACK_PARSERS.get(parser_id, {})
         api_url = str(parser.get("url") or "").strip()
         if not api_url:
             return ""
@@ -1048,7 +1033,6 @@ def playerContent(flag, id, vipFlags=None):
     return _get_singleton().playerContent(flag, id, vipFlags)
 
 
-# 类名别名（部分内核按小写 spider 约定取类）
 spider = Spider
 
 
