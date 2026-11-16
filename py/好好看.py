@@ -10,6 +10,7 @@ UA = "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/120 Mobile Safar
 class Spider(Spider):
     def getName(self):
         return "好好看"
+
     def init(self, extend=""):
         try:
             ext = json.loads(extend)
@@ -20,22 +21,84 @@ class Spider(Spider):
         self.s = requests.Session()
         self.s.headers.update(self.headers)
         self.s.headers["Accept-Encoding"] = "gzip, deflate"
+
+        # 分类列表（如需新增独立入口，例如把武侠作为独立分类，可取消下方注释）
         self.categories = [
             {"type_id": "1", "type_name": "电影"},
             {"type_id": "2", "type_name": "剧集"},
             {"type_id": "3", "type_name": "动漫"},
             {"type_id": "4", "type_name": "综艺"},
             {"type_id": "6", "type_name": "短剧"},
+            # {"type_id": "1-武侠", "type_name": "武侠电影"},
         ]
+
+        # 静态内置完整筛选规则（秒加载，不依赖首页并发爬虫）
+        self._base_filter = [
+            {
+                "key": "sort",
+                "name": "排序",
+                "value": [
+                    {"n": "综合", "v": "1"},
+                    {"n": "最新", "v": "2"},
+                    {"n": "最热", "v": "3"},
+                    {"n": "评分", "v": "4"}
+                ]
+            },
+            {
+                "key": "cls",
+                "name": "类型",
+                "value": [{"n": "全部", "v": ""}] + [
+                    {"n": x, "v": x} for x in [
+                        "剧情", "喜剧", "动作", "爱情", "恐怖", "惊悚", "犯罪",
+                        "科幻", "悬疑", "奇幻", "冒险", "战争", "历史", "古装",
+                        "家庭", "传记", "武侠", "歌舞", "短片", "动画", "儿童", "职场"
+                    ]
+                ]
+            },
+            {
+                "key": "area",
+                "name": "地区",
+                "value": [{"n": "全部", "v": ""}] + [
+                    {"n": x, "v": x} for x in [
+                        "大陆", "香港", "台湾", "美国", "日本", "韩国", "英国",
+                        "法国", "德国", "印度", "泰国", "丹麦", "瑞典", "巴西",
+                        "加拿大", "俄罗斯", "意大利", "比利时", "爱尔兰", "西班牙",
+                        "澳大利亚", "其他"
+                    ]
+                ]
+            },
+            {
+                "key": "lang",
+                "name": "语言",
+                "value": [{"n": "全部", "v": ""}] + [
+                    {"n": x, "v": x} for x in [
+                        "国语", "粤语", "英语", "日语", "韩语", "法语", "其他"
+                    ]
+                ]
+            },
+            {
+                "key": "year",
+                "name": "年份",
+                "value": [{"n": "全部", "v": ""}] + [
+                    {"n": x, "v": x} for x in [
+                        "2026", "2025", "2024", "2023", "2022", "2021", "2020",
+                        "10年代", "00年代", "90年代", "80年代", "更早"
+                    ]
+                ]
+            }
+        ]
+
         self._tok = ""
         self._tok_t = 0
-        self._fcache = {}
+        self._fcache = {c["type_id"]: self._base_filter for c in self.categories}
         self._src_alive = {}
-        self._filters_built = False
         self._lock = threading.Lock()
         self._pool = cf.ThreadPoolExecutor(8)
+
     def _solve(self, html):
         m = re.search(r"'([0-9A-F]{40})'", html)
+        if not m:
+            return
         c = m.group(1)
         n1 = int(c[0], 16)
         i = 0
@@ -45,6 +108,7 @@ class Spider(Spider):
                 break
             i += 1
         self.s.cookies.set("cdndefend_js_cookie", c + str(i), domain=self.host.split("//")[-1])
+
     def _get(self, url):
         try:
             u = url if url.startswith("http") else self.host + url
@@ -61,10 +125,12 @@ class Spider(Spider):
             return r.text
         except Exception:
             return ""
+
     def _pic(self, u):
         if not u:
             return ""
         return PIC + u if u.startswith("/") else u
+
     def _items(self, html):
         out = []
         seen = set()
@@ -76,8 +142,14 @@ class Spider(Spider):
             cov = next((x for x in re.findall(r'data-original="([^"]+)"', blk) if x.startswith("/vod1")), "")
             tit = re.findall(r'<div class="v-item-title">([^<]+)</div>', blk)
             rem = re.search(r'<div class="v-item-bottom">\s*<span>\s*([^<]+?)\s*</span>', blk)
-            out.append({"vod_id": mid.group(1), "vod_name": tit[0].strip() if tit else "", "vod_pic": self._pic(cov), "vod_remarks": rem.group(1) if rem else ""})
+            out.append({
+                "vod_id": mid.group(1),
+                "vod_name": tit[0].strip() if tit else "",
+                "vod_pic": self._pic(cov),
+                "vod_remarks": rem.group(1) if rem else ""
+            })
         return out
+
     def _token(self):
         if not self._tok or time.time() - self._tok_t > 1800:
             h = self._get("/")
@@ -85,47 +157,9 @@ class Spider(Spider):
             self._tok = m.group(1) if m else ""
             self._tok_t = time.time()
         return self._tok
-    def _build_filters(self, tid):
-        html = self._get(f"/show/{tid}-----1-1.html")
-        fmap = {"类型": "cls", "地区": "area", "语言": "lang", "年份": "year", "排序": "sort"}
-        fl = []
-        for name, body in re.findall(r'<div class="filter-row-side">\s*<strong>([^:]+):</strong>.*?<div class="filter-row-main">(.*?)</div>\s*</div>', html, re.S):
-            key = fmap.get(name.strip())
-            if not key:
-                continue
-            vals, seenl = [], set()
-            for href, txt in re.findall(r'<a\s+href="(/show/[^"]+)"\s+class="filter-item[^"]*">([^<]+)</a>', body):
-                t = txt.strip()
-                if t in seenl:
-                    continue
-                seenl.add(t)
-                segs = href[len("/show/"):].split(".")[0].split("-")
-                v = ""
-                if key == "sort":
-                    v = segs[5] if len(segs) == 7 else "1"
-                else:
-                    idx = {"cls": 1, "area": 2, "lang": 3, "year": 4}[key]
-                    v = urllib.parse.unquote(segs[idx]) if len(segs) == 7 else ""
-                vals.append({"n": t if t != "全部" else ("综合" if key == "sort" else "全部"), "v": v})
-            if vals:
-                fl.append({"key": key, "name": name.strip(), "value": vals})
-        order = ["sort", "cls", "area", "lang", "year"]
-        fl.sort(key=lambda x: order.index(x["key"]) if x["key"] in order else 9)
-        return fl
-    def _ensure_filters(self):
-        if self._filters_built:
-            return
-        futs = {tid: self._pool.submit(self._build_filters, tid) for tid, _ in [(c["type_id"], 0) for c in self.categories]}
-        for tid, f in futs.items():
-            try:
-                self._fcache[tid] = f.result()
-            except Exception:
-                self._fcache[tid] = []
-        self.filters = self._fcache
-        self._filters_built = True
+
     def homeContent(self, filter):
         html = self._get("/")
-        self._ensure_filters()
         hot = []
         seen = set()
         for blk in re.findall(r'<div class="module-item">.*?</div>\s*</a>\s*</div>', html, re.S):
@@ -138,18 +172,36 @@ class Spider(Spider):
             if tit:
                 hot.append({"vod_id": mid.group(1), "vod_name": tit[0].strip(), "vod_pic": self._pic(cov)})
         return {"class": self.categories, "list": hot[:40], "filters": self._fcache}
+
     def categoryContent(self, tid, pg, filter, extend):
         extend = extend or {}
-        cls = urllib.parse.quote(extend.get("cls", ""))
+        # 支持自定义组合 tid（如 "1-武侠"）或标准 tid（如 "1"）
+        if "-" in tid:
+            parts = tid.split("-", 1)
+            real_tid = parts[0]
+            default_cls = parts[1]
+        else:
+            real_tid = tid
+            default_cls = ""
+
+        cls = urllib.parse.quote(extend.get("cls", default_cls))
         area = urllib.parse.quote(extend.get("area", ""))
         lang = urllib.parse.quote(extend.get("lang", ""))
-        year = extend.get("year", "")
+        year = urllib.parse.quote(extend.get("year", ""))
         sort = extend.get("sort", "1")
-        url = f"/show/{tid}-{cls}-{area}-{lang}-{year}-{sort}-{pg}.html"
+
+        url = f"/show/{real_tid}-{cls}-{area}-{lang}-{year}-{sort}-{pg}.html"
         html = self._get(url)
         lst = self._items(html)
         pagecount = int(pg) + 1 if 'page-item-next' in html else int(pg)
-        return {"page": int(pg), "pagecount": pagecount, "limit": len(lst), "total": pagecount * max(len(lst), 1), "list": lst}
+        return {
+            "page": int(pg),
+            "pagecount": pagecount,
+            "limit": len(lst),
+            "total": pagecount * max(len(lst), 1),
+            "list": lst
+        }
+
     def _probe_ep(self, ep):
         try:
             h = self._get(ep)
@@ -158,6 +210,7 @@ class Spider(Spider):
             return bool(re.search(r'src:\s*"https?://[^"]+"', h))
         except Exception:
             return True
+
     def _alive_mask(self, plays, urls):
         pending = {}
         for i, us in enumerate(urls):
@@ -176,6 +229,7 @@ class Spider(Spider):
             sn = us.split("#")[0].split("$")[1].split("-")[-2]
             mask.append(self._src_alive.get(sn, True))
         return mask if any(mask) else [True] * len(urls)
+
     def detailContent(self, ids):
         vid = ids[0]
         html = self._get(f"/detail/{vid}.html")
@@ -201,8 +255,21 @@ class Spider(Spider):
         kurls = [u for u, a in zip(urls, alive) if a]
         if not kplays:
             kplays, kurls = plays, urls
-        vod = {"vod_id": vid, "vod_name": name.group(1).strip() if name else "", "vod_pic": self._pic(cov.group(1)) if cov else "", "type_name": ",".join(tags), "vod_year": next((t for t in tags if re.match(r"^(19|20)\d{2}", t)), ""), "vod_area": next((t for t in tags if t.endswith(("大陆", "香港", "台湾")) or t in ("美国", "韩国", "日本", "泰国", "英国", "法国", "德国", "印度")), ""), "vod_director": rowtxt("导演"), "vod_actor": rowtxt("演员"), "vod_content": re.sub(r"<[^>]+>|\s+", " ", desc.group(1)).strip() if desc else "", "vod_play_from": "$$$".join(kplays), "vod_play_url": "$$$".join(kurls)}
+        vod = {
+            "vod_id": vid,
+            "vod_name": name.group(1).strip() if name else "",
+            "vod_pic": self._pic(cov.group(1)) if cov else "",
+            "type_name": ",".join(tags),
+            "vod_year": next((t for t in tags if re.match(r"^(19|20)\d{2}", t)), ""),
+            "vod_area": next((t for t in tags if t.endswith(("大陆", "香港", "台湾")) or t in ("美国", "韩国", "日本", "泰国", "英国", "法国", "德国", "印度")), ""),
+            "vod_director": rowtxt("导演"),
+            "vod_actor": rowtxt("演员"),
+            "vod_content": re.sub(r"<[^>]+>|\s+", " ", desc.group(1)).strip() if desc else "",
+            "vod_play_from": "$$$".join(kplays),
+            "vod_play_url": "$$$".join(kurls)
+        }
         return {"list": [vod]}
+
     def searchContent(self, key, quick, pg="1"):
         url = f"/search?k={urllib.parse.quote(key)}&page={pg}&t={self._token()}"
         html = self._get(url)
@@ -217,9 +284,15 @@ class Spider(Spider):
             cov = re.search(r'data-original="(/vod1[^"]+)"', blk)
             tg = re.search(r'<div class="tags">(.*?)</div>', blk, re.S)
             tvals = [t.strip() for t in re.findall(r'<span>([^<]+)</span>', tg.group(1))] if tg else []
-            out.append({"vod_id": vid, "vod_name": nm.group(1).strip() if nm else "", "vod_pic": self._pic(cov.group(1)) if cov else "", "vod_remarks": "/".join(tvals[:2])})
+            out.append({
+                "vod_id": vid,
+                "vod_name": nm.group(1).strip() if nm else "",
+                "vod_pic": self._pic(cov.group(1)) if cov else "",
+                "vod_remarks": "/".join(tvals[:2])
+            })
         pagecount = int(pg) + 1 if 'page-item-next' in html else int(pg)
         return {"list": out, "page": int(pg), "pagecount": pagecount}
+
     def playerContent(self, flag, id, vipFlags):
         html = self._get(id if id.startswith("/") else "/" + id)
         m = re.search(r'src:\s*"([^"]+\.(?:m3u8|mp4)[^"]*)"', html)
