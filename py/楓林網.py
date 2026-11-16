@@ -1,7 +1,7 @@
 # coding=utf-8
 """
 目标站: 楓林網 (imaple8.tv)
-站点: https://imaple8.tv/
+站点: https://8maple.st/
 框架: 苹果CMS (maccms) + MYUI 模板
 功能: 分类/首页/搜索/详情/播放解析（player_aaaa -> 直链 m3u8）
 """
@@ -18,7 +18,7 @@ from base.spider import Spider
 
 class Spider(Spider):
     def init(self, extend=""):
-        self.site_url = "https://imaple8.tv"
+        self.site_url = "https://8maple.st"
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Referer': self.site_url + '/',
