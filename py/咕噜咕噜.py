@@ -42,7 +42,7 @@ from urllib.parse import quote
 API_URL = "http://103.45.132.22:19987/app/bn/v2"
 HOST = "http://103.45.132.22:19987"
 USER_AGENT = "Dart/3.10 (dart:io)"
-APP_VERSION = "2.1.3"
+APP_VERSION = "2.2.5"
 BUILD_NUMBER = "20109"
 APP_SIGNATURE = "32E0AB4FF93A29CE0E6F0BFB01F2F1B788E76262731F3F30F509CB822428ED58"
 DEVICE_BUILD = "pangu-build-component-system-513739-s9vkd-rlxnj-p3rhm"
