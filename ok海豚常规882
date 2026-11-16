@@ -59,7 +59,7 @@
            "key": "腾爱优b站",
           "name": "🐬[追剧]腾爱优b站.js",
           "type": 3,
-          "api": "https://raw.githubusercontent.com/phu889/kjh998/refs/heads/main/jar_js/腾爱优b站.js"
+          "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/jar_js/腾爱优b站.js"
         },
 		{
             "key": "腾爱优芒B",
@@ -103,48 +103,12 @@
             "type": 3,
             "api": "https://openlist.gohkh8.eu.org/d/%E6%9C%AC%E6%9C%BA%E5%AD%98%E5%82%A8/1BD142/py/影视岛.py"
      
-    },
+        },
 		{
             "key":"youtube",
             "name":"🐬[其他]油管,py",
 			"type": 3,
 			"api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/油管.py"
-		},
-		{
-            "key": "星梦Asmr",
-            "name": "🐬[其他]星梦Asmr.py",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/星梦Asmr.py"
-        },
-		{
-            "key": "ASMR吧",
-            "name": "🐬[其他]ASMR吧.py",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/ASMR吧.py"
-        },
-        {
-        	"key": "两个BT影视",
-            "name": "🐬[追剧]两个BT影视",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/两个BT影视.py"
-		},
-		{
-        	"key": "卧龙影院",
-            "name": "🐬[追剧][伦理]卧龙影院",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/[伦理]卧龙影院.py"
-		},
-		{
-        	"key": "龙江影院",
-            "name": "🐬[追剧][伦理]龙江影院(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/[伦理]龙江影院.py"
-		},
-		{
-        	"key": "吃瓜影院",
-            "name": "🐬[追剧]吃瓜影院",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/吃瓜影院.py"
 		},
 		{
         	"key": "影视森林",
@@ -163,12 +127,6 @@
             "name": "🐬[追剧]洛雪TV(关梯)",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/洛雪TV.py"
-		},
-        {
-        	"key": "人人视频",
-            "name": "🐬[追剧]人人视频(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/人人视频.py"
 		},
         {
         	"key": "绿色影视",
@@ -235,13 +193,7 @@
             "name": "🐬[追剧]未来影院(关梯)",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/未来影院(关梯).py"
-		},
-        {
-        	"key": "大白鲨影院",
-            "name": "🐬[追剧]大白鲨影院",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/大白鲨影院.py"
-		},
+		},\
         {
         	"key": "咸鱼影视",
             "name": "🐬[追剧]咸鱼影视",
@@ -259,19 +211,7 @@
             "name": "🐬[追剧]LIBVIO",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/LIBVIO.py"
-		},
-        {
-        	"key": "咕噜咕噜",
-            "name": "🐬[追剧]咕噜咕噜",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/咕噜咕噜.py"
-		},
-        {
-        	"key": "ik4k影院",
-            "name": "🐬[追剧]ik4k影院(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/ik4k影院.py"
-		},
+		},,
         {
         	"key": "魔法影视",
             "name": "🐬[追剧]魔法影视",
@@ -279,28 +219,10 @@
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/魔法影视.py"
 		},
         {
-        	"key": "云朵视频",
-            "name": "🐬[追剧]云朵视频(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/云朵视频(关梯).py"
-		},
-        {
-        	"key": "追影",
-            "name": "🐬[追剧]追影",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/追影.py"
-		},
-        {
         	"key": "独播库",
             "name": "🐬[追剧]独播库",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/独播库.py"
-		},
-		{
-        	"key": "网飞猫影视",
-            "name": "🐬[追剧]网飞猫影视(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/网飞猫影视(关梯).py"
 		},
 		{
         	"key": "ZIP0影视",
@@ -315,28 +237,10 @@
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/饭搭子影视.py"
 		},
 		{
-        	"key": "无极电影网",
-            "name": "🐬[追剧]无极电影网(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/无极电影网(关梯).py"
-		},
-		{
-        	"key": "55影院",
-            "name": "🐬[追剧]55影院(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/55影院(关梯).py"
-		},
-		{
         	"key": "开端影视",
             "name": "🐬[追剧]开端影视",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/开端影视.py"
-		},
-		{
-        	"key": "手机影院",
-            "name": "🐬[追剧]手机影院(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/手机影院.py"
 		},
 		{
         	"key": "果果短剧",
@@ -361,13 +265,7 @@
             "name": "🐬[追剧]第七影院",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/第七影院.py"
-		},
-		{
-        	"key": "橘汁视频",
-            "name": "🐬[追剧]橘汁视频",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/橘汁视频.py"
-		},
+		},,
 		{
         	"key": "华谊影视",
             "name": "🐬[追剧]华谊影视",
@@ -375,52 +273,10 @@
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/华谊影视.py"
 		},
 		{
-        	"key": "芭蕉剧场",
-            "name": "🐬[追剧]芭蕉剧场(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/芭蕉剧场.py"
-		},
-		{
-        	"key": "6080新视觉",
-            "name": "🐬[追剧]6080新视觉",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/6080新视觉.py"
-		},
-		{
             "key": "6080影视",
             "name": "🐬[追剧]6080影视",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/6080影视.py"
-        },
-		{
-			"key": "99短剧网",
-			"name": "🐬[追剧]99短剧网",
-			"type": 3,
-			"api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/99短剧网.py"
-		},
-		{
-			"key": "第九短剧网",
-			"name": "🐬[追剧]第九短剧网(关梯)",
-			"type": 3,
-			"api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/第九短剧网.py"
-		},
-		{
-            "key": "青鸟影视",
-            "name": "🐬[追剧]青鸟影视",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/青鸟影视.py"
-        },
-		{
-            "key": "迷你影视",
-            "name": "🐬[追剧]迷你影视(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/迷你影视.py"
-        },
-		{
-            "key": "八度影院",
-            "name": "🐬[追剧]八度影院(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/八度影院.py"
         },
 		{
             "key": "4K影视仓",
@@ -435,24 +291,6 @@
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/CNFLIX.py"
         },
 		{
-            "key": "风尚影视",
-            "name": "🐬[追剧]风尚影视",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/风尚影视.py"
-        },
-		{
-            "key": "云途影视",
-            "name": "🐬[追剧]云途影视(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/云途影视.py"
-        },
-		{
-            "key": "永乐视频",
-            "name": "🐬[追剧]永乐视频",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/永乐视频.py"
-        },
-		{
             "key": "夏日影院",
             "name": "🐬[追剧]夏日影院.py",
             "type": 3,
@@ -463,12 +301,6 @@
             "name": "🐬[追剧]君念影院.py(关梯)",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/君念影院.py"
-        },
-		{
-            "key": "首映网",
-            "name": "🐬[追剧]首映网.py(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/首映网.py"
         },
 		{
             "key": "剧下饭4K",
@@ -489,22 +321,10 @@
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/青牛影视.py"
         },
 		{
-            "key": "山水影视",
-            "name": "🐬[追剧]山水影视.py",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/山水影视.py"
-        },
-		{
             "key": "搜剧AI",
             "name": "🐬[追剧]搜剧AI.py",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/搜剧AI.py"
-        },
-		{
-            "key": "厂长资源",
-            "name": "🐬[追剧]厂长资源.py",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/厂长资源.py"
         },
 		{
             "key": "多多影视",
@@ -543,22 +363,10 @@
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/电影侠.py"
         },
 		{
-            "key": "影视大全",
-            "name": "🐬[追剧]影视大全.py(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/影视大全.py"
-        },
-		{
             "key": "一起影视",
             "name": "🐬[追剧]一起影视.py",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/一起影视.py"
-        },
-		{
-            "key": "仙腾影院",
-            "name": "🐬[追剧]仙腾影院.py(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/仙腾影院.py"
         },
 		{
             "key": "看戏影视",
@@ -567,34 +375,16 @@
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/看戏影视.py"
         },
 		{
-            "key": "百花影院",
-            "name": "🐬[追剧]百花影院.py(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/百花影院.py"
-        },
-		{
             "key": "VIP兔",
             "name": "🐬[追剧]VIP兔.py",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/VIP兔.py"
         },
 		{
-            "key": "刷不停短剧",
-            "name": "🐬[追剧]刷不停短剧.py(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/刷不停短剧.py"
-        },
-		{
             "key": "飞快TV",
             "name": "🐬[追剧]飞快TV.py(关梯)",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/飞快TV.py"
-        },
-		{
-            "key": "Auete影视",
-            "name": "🐬[追剧]Auete影视.py(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/Auete影视.py"
         },
 		{
             "key": "大马猴",
@@ -621,40 +411,16 @@
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/66大片网.py"
         },
 		{
-            "key": "泡泡影院",
-            "name": "🐬[追剧]泡泡影院.py",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/泡泡影院.py"
-        },
-		{
             "key": "楓林網",
             "name": "🐬[追剧]楓林網.py(关梯)",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/楓林網.py"
         },
 		{
-            "key": "草莓影视",
-            "name": "🐬[追剧]草莓影视.py(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/草莓影视.py"
-        },
-		{
             "key": "八戒影视",
             "name": "🐬[追剧]八戒影视.py",
             "type": 3,
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/八戒影视.py"
-        },
-		{
-            "key": "30剧集网",
-            "name": "🐬[追剧]30剧集网.py(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/30剧集网.py"
-        },
-        {
-            "key": "宅男影视",
-            "name": "🐬[追剧]宅男影视.py(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/宅男影视.py"
         },
         {
             "key": "看剧AI",
@@ -663,34 +429,10 @@
             "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/看剧AI.py"
         },
         {
-            "key": "高清点播",
-            "name": "🐬[追剧]高清点播.py(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/高清点播.py"
-        },
-        {
-            "key": "vidhub",
-            "name": "🐬[追剧]vidhub.py(关梯)",
-            "type": 3,
-            "api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/vidhub.py"
-        },
-        {
-			"key": "枫叶4K",
-			"name": "🐬[追剧]枫叶4K.py(关梯)",
-			"type": 3,
-			"api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/枫叶4K.py"
-		},
-        {
 			"key": "追影",
 			"name": "🐬[追剧]追影.py",
 			"type": 3,
 			"api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/追影.py"
-		},
-        {
-			"key": "网飞TV",
-			"name": "🐬[追剧]网飞TV.py(关梯)",
-			"type": 3,
-			"api": "https://github.com/gohkh0825live/tvbox/raw/refs/heads/main/py/网飞TV.py"
 		},
         {
 			"key": "厂长影视",
